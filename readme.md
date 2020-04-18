@@ -7,7 +7,7 @@ Good news! You came to the right place. Just follow these ??? easy steps and you
 * A thermal printer, ideally a Paperang P1. There are a number of places where you can buy one: Amazon ([US](https://www.amazon.com/PAPERANG-Portable-Language-Wireless-Bluetooth/dp/B07TCJ2TC6/), [UK](https://www.amazon.co.uk/PAPERANG-Wireless-Mobile-Instant-Printer/dp/B078HZK2NV), [DE](https://www.amazon.de/Paperang-Mini-Drucker-Android-Ger%C3%A4te-Druckpapier-gew%C3%B6hnlich/dp/B082PWV57H/)), [Thepaperang](https://thepaperang.com/products/paperang-p1), [Paperangprint](https://paperangprint.com/collections/paperang-printers/products/paperang-p1), [Aliexpress](https://www.aliexpress.com/w/wholesale-paperang-p1.html) and so on. Don't forget to buy a few rolls of paper for it; you can find them in many colors, and sticker paper is especially fun!
 * Ideally, a Raspberry Pi with Bluetooth, but we've tested this with a Mac as well, and with some tweaks it will work on any computer with Bluetooth running *nix
 * Node.js 10, Python 3.7, Docker
-* Ideally an iPhone, but you can use the web client as well (with reduced functionality)
+* Ideally an iPhone for the [app](https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&mt=8), but you can use the [web client](https://littleprinters.netlify.app/) as well (with reduced functionality)
 
 # How to get started
 
@@ -21,7 +21,7 @@ Pair your Paperang with your computer over Bluetooth and make sure you have Node
 
 This project is predicated on us prentending to be a Little Printer, so let's do that.
 
-Clone the `sirius` repository from github: `git clone https://github.com/nordprojects/sirius`, install the required packages (`pip3 install -r requirements.txt`) which does not make it work right now so do a `docker-compose -f docker-compose.yml -f docker-compose.db.yml -f docker-compose.development.yml up --build -d` and get a cup of coffee.
+Clone the [`nordprojects/sirius`](https://github.com/nordprojects/sirius) repository from github, then run `docker-compose -f docker-compose.yml -f docker-compose.db.yml -f docker-compose.development.yml up --build -d` and get a cup of coffee while it all downloads and builds.
 
 Once it's up and running, ssh into it (`docker-compose exec sirius bash`) and run `./manage.py fake printer`, which generates a `*.printer` file, it looks like this:
 
@@ -36,11 +36,11 @@ Save that into a file, guard it with your life; this is your printer now.
 
 Next, we're going to claim the printer on the nord-sirious instance. Go to [https://littleprinter.nordprojects.co/](https://littleprinter.nordprojects.co/), sign in with Twitter, and click "Claim a printer". Enter the claim code you have and give it a name, then hit "Claim Printer".
 
-Congratulations, you now have a fake Little Printer! Save the `device.li` address, you'll need it later to add the printer to the (web)app.
+Congratulations, you now have a fake Little Printer! Save the [`device.li`](https://device.li) address, you'll need it later to add the printer to the (web)app.
 
 # Wiring it all up
 
-Next, we'll put it all together, connecting our Paperang to the network. For that, we use two projects: [sirius-client] and [python-paperang]. They should really be merged into one. One day.
+Next, we'll put it all together, connecting our Paperang to the network. For that, we use two projects: [sirius-client](https://github.com/ktamas/sirius-client) and [python-paperang](https://github.com/ktamas/python-paperang). They should really be merged into one. One day.
 
 Anyways, clone both of them from Github, and we'll start with some testing with the latter project. We're going to assume you have at least a passing understanding of both Python and Typescript.
 
@@ -54,7 +54,11 @@ Let's get `sirius-client` working. Install ts-node globally (`npm install ts-nod
 
 Now run both projects (`python3 littlepriter.py` and `ts-node bin/client.ts`), and you're ready to print something!
 
-Get the [app](https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&mt=8), add a printer via its `device.li` address, and print something! Or use the API. Go wild.
+Get the [app](https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&mt=8) (or use the [web client](https://littleprinters.netlify.app/)), add a printer via its `device.li` address, and print something! Or use the API. Go wild.
+
+# Credits
+
+[Tamas Kadar (KTamas)](https://ktamas.com/) ([email](mailto:ktamas@ktamas.com), [twitter](https://twitter.com/ktamas)) and [Joshua May (notjosh)](https://notjosh.com/) ([twitter](https://twitter.com/notjosh)). Watch the [!!Con 2020](http://bangbangcon.com/) talk ["Little Printing for Everyone!!1"](http://bangbangcon.com/speakers.html) by KTamas once it's published on YouTube.
 
 # How the whole fake printer thing works (by Josh)
 
