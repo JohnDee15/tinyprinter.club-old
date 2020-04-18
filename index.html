@@ -1,1 +1,95 @@
-Soon
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    <title>So you want to have a Little Printer</title>
+    <link type="text/css" rel="stylesheet" href="assets/css/github-markdown.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/pilcrow.css">
+    <link type="text/css" rel="stylesheet" href="assets/css/hljs-github.min.css"/>
+  </head>
+  <body>
+    <article class="markdown-body"><h1 id="so-you-want-to-have-a-little-printer"><a class="header-link" href="#so-you-want-to-have-a-little-printer"></a>So you want to have a Little Printer</h1>
+<p>Good news! You came to the right place. Just follow these ??? easy steps and you&#39;ll be set up in no time* (a fair amount of time, actually.)</p>
+<h1 id="what-you'll-need"><a class="header-link" href="#what-you'll-need"></a>What you&#39;ll need</h1>
+<ul class="list">
+<li>A thermal printer, ideally a Paperang P1. There are a number of places where you can buy one: Amazon (<a href="https://www.amazon.com/PAPERANG-Portable-Language-Wireless-Bluetooth/dp/B07TCJ2TC6/">US</a>, <a href="https://www.amazon.co.uk/PAPERANG-Wireless-Mobile-Instant-Printer/dp/B078HZK2NV">UK</a>, <a href="https://www.amazon.de/Paperang-Mini-Drucker-Android-Ger%C3%A4te-Druckpapier-gew%C3%B6hnlich/dp/B082PWV57H/">DE</a>), <a href="https://thepaperang.com/products/paperang-p1">Thepaperang</a>, <a href="https://paperangprint.com/collections/paperang-printers/products/paperang-p1">Paperangprint</a>, <a href="https://www.aliexpress.com/w/wholesale-paperang-p1.html">Aliexpress</a> and so on. Don&#39;t forget to buy a few rolls of paper for it; you can find them in many colors, and sticker paper is especially fun!</li>
+<li>Ideally, a Raspberry Pi with Bluetooth, but we&#39;ve tested this with a Mac as well, and with some tweaks it will work on any computer with Bluetooth running *nix</li>
+<li>Node.js 10, Python 3.7, Docker</li>
+<li>Ideally an iPhone, but you can use the web client as well (with reduced functionality)</li>
+</ul>
+<h1 id="how-to-get-started"><a class="header-link" href="#how-to-get-started"></a>How to get started</h1>
+<p>We&#39;ll assume you have your Paperang. Great! You can already use via its app on your smartphone, but that&#39;s not what we&#39;ll do.</p>
+<p>Connect your Paperang to a power source with a USB cable to prevent drain. It should also keep it turned on. You can communicate with the printer via USB but for now, we&#39;ll just use bluetooth.</p>
+<p>Pair your Paperang with your computer over Bluetooth and make sure you have Node 10, Python 3.7 and Docker installed.</p>
+<h1 id="let's-make-a-(fake)-printer"><a class="header-link" href="#let's-make-a-(fake)-printer"></a>Let&#39;s make a (fake) printer</h1>
+<p>This project is predicated on us prentending to be a Little Printer, so let&#39;s do that.</p>
+<p>Clone the <code>sirius</code> repository from github: <code>git clone https://github.com/nordprojects/sirius</code>, install the required packages (<code>pip3 install -r requirements.txt</code>) which does not make it work right now so do a <code>docker-compose -f docker-compose.yml -f docker-compose.db.yml -f docker-compose.development.yml up --build -d</code> and get a cup of coffee.</p>
+<p>Once it&#39;s up and running, ssh into it (<code>docker-compose exec sirius bash</code>) and run <code>./manage.py fake printer</code>, which generates a <code>*.printer</code> file, it looks like this:</p>
+<pre class="hljs"><code>  <span class="hljs-attribute">address</span>: abcdef0123456789
+       DB <span class="hljs-attribute">id</span>: <span class="hljs-number">8</span>
+      <span class="hljs-attribute">secret</span>: <span class="hljs-number">4</span>a8489a9b8
+  claim <span class="hljs-attribute">code</span>: <span class="hljs-number">123</span>a-<span class="hljs-number">456</span>b-<span class="hljs-number">789</span>c-<span class="hljs-number">012</span>d</code></pre><p>Save that into a file, guard it with your life; this is your printer now.</p>
+<p>Next, we&#39;re going to claim the printer on the nord-sirious instance. Go to <a href="https://littleprinter.nordprojects.co/">https://littleprinter.nordprojects.co/</a>, sign in with Twitter, and click &quot;Claim a printer&quot;. Enter the claim code you have and give it a name, then hit &quot;Claim Printer&quot;.</p>
+<p>Congratulations, you now have a fake Little Printer! Save the <code>device.li</code> address, you&#39;ll need it later to add the printer to the (web)app.</p>
+<h1 id="wiring-it-all-up"><a class="header-link" href="#wiring-it-all-up"></a>Wiring it all up</h1>
+<p>Next, we&#39;ll put it all together, connecting our Paperang to the network. For that, we use two projects: [sirius-client] and [python-paperang]. They should really be merged into one. One day.</p>
+<p>Anyways, clone both of them from Github, and we&#39;ll start with some testing with the latter project. We&#39;re going to assume you have at least a passing understanding of both Python and Typescript.</p>
+<p>If you&#39;re on linux, and we&#39;ll assume Debian, you&#39;ll need the following packages installed: <code>libbluetooth-dev libhidapi-dev libatlas-base-dev python3-llvmlite python3-numba python-llvmlite llvm-dev</code></p>
+<p>Find the MAC address of your printer and put that into <code>printer.py</code> and <code>littleprinter.py</code>. Yes, this should be in a separate config file or something. While you&#39;re in the latter file, set a temp directory that&#39;s writeable with whatever user you&#39;re using for the two projects to communicate.</p>
+<p>Uncomment the self-test in <code>printer.py</code> then run it. If you did everything well, you should have a bunch of infos printed on your Paperang!</p>
+<p>Let&#39;s get <code>sirius-client</code> working. Install ts-node globally (<code>npm install ts-node</code>), then do a <code>yarn install</code>. Put your printer file into the <code>fixtures</code> folder, then edit <code>bin/client.ts</code> and point <code>printerDataPath</code> to it. Edit <code>src/device/printer/filesystem-printer.ts</code> and update it with the temp directory we use for communication that you created two paragraphs before.</p>
+<p>Now run both projects (<code>python3 littlepriter.py</code> and <code>ts-node bin/client.ts</code>), and you&#39;re ready to print something!</p>
+<p>Get the <a href="https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&amp;mt=8">app</a>, add a printer via its <code>device.li</code> address, and print something! Or use the API. Go wild.</p>
+<h1 id="how-the-whole-fake-printer-thing-works-(by-josh)"><a class="header-link" href="#how-the-whole-fake-printer-thing-works-(by-josh)"></a>How the whole fake printer thing works (by Josh)</h1>
+<p>Josh: It takes the printer ID (mac address of printer iirc, that you can generate) and makes a random 16 digit code (&quot;claim code&quot;). From there, it posts that to the server as part of the normal handshake. Then the device just...waits. eventually the user logs onto the server, types in claim code, then you own that printer ID, and the server will start firing payloads at it. It&#39;s all very....simple. no like, fancy key exchange, or identification, or anything.</p>
+<p>KTamas: right, so if i want to make a new printer, what do i do?...</p>
+<p>Josh: so, the most reliable way to make a printer is to clone <code>https://github.com/nordprojects/sirius</code> then run <code>./manage.py fake printer</code> -&gt; generates <code>*.printer</code> file. Looks like:</p>
+<pre class="hljs"><code>  <span class="hljs-attribute">address</span>: abcdef0123456789
+       DB <span class="hljs-attribute">id</span>: <span class="hljs-number">8</span>
+      <span class="hljs-attribute">secret</span>: <span class="hljs-number">4</span>a8489a9b8
+  claim <span class="hljs-attribute">code</span>: <span class="hljs-number">123</span>a-<span class="hljs-number">456</span>b-<span class="hljs-number">789</span>c-<span class="hljs-number">012</span>d</code></pre><p>Sso that is &quot;a printer&quot;, essentially. but what do we do with that? ... well! When we connect to the server (via websocket), we don&#39;t need to send any special &quot;it&#39;s my first time&quot; payload, we just send a regular payload every time, that looks like:</p>
+<pre class="hljs"><code>{
+    <span class="hljs-attribute">type</span>: <span class="hljs-string">'BridgeEvent'</span>,
+    <span class="hljs-attribute">json_payload</span>: {
+      <span class="hljs-attribute">ncp_version</span>: <span class="hljs-string">'0x46C5'</span>,
+      <span class="hljs-attribute">uptime</span>: <span class="hljs-string">'45.71 23.94'</span>,
+      <span class="hljs-attribute">firmware_version</span>: <span class="hljs-string">'v2.3.1-f3c7946'</span>,
+      <span class="hljs-attribute">network_info</span>: {
+        <span class="hljs-attribute">extended_pan_id</span>: <span class="hljs-string">'0xredacted'</span>,
+        <span class="hljs-attribute">node_type</span>: <span class="hljs-string">'EMBER_COORDINATOR'</span>,
+        <span class="hljs-attribute">radio_power_mode</span>: <span class="hljs-string">'EMBER_TX_POWER_MODE_BOOST'</span>,
+        <span class="hljs-attribute">security_level</span>: <span class="hljs-number">5</span>,
+        <span class="hljs-attribute">network_status</span>: <span class="hljs-string">'EMBER_JOINED_NETWORK'</span>,
+        <span class="hljs-attribute">channel</span>: <span class="hljs-number">11</span>,
+        <span class="hljs-attribute">security_profile</span>: <span class="hljs-string">'Custom'</span>,
+        <span class="hljs-attribute">power</span>: <span class="hljs-number">8</span>,
+        <span class="hljs-attribute">node_eui64</span>: <span class="hljs-string">'0xredacted'</span>,
+        <span class="hljs-attribute">pan_id</span>: <span class="hljs-string">'0xDF3A'</span>,
+        <span class="hljs-attribute">node_id</span>: <span class="hljs-string">'0x0000'</span>,
+      },
+      <span class="hljs-attribute">name</span>: <span class="hljs-string">'power_on'</span>,
+      <span class="hljs-attribute">local_ip_address</span>: <span class="hljs-string">'192.168.1.98'</span>,
+      <span class="hljs-attribute">uboot_environment</span>:
+        <span class="hljs-string">'long text'</span>,
+      <span class="hljs-attribute">mac_address</span>: <span class="hljs-string">'redacted'</span>,
+      <span class="hljs-attribute">model</span>: <span class="hljs-string">'A'</span>,
+    },
+    <span class="hljs-attribute">bridge_address</span>: <span class="hljs-string">'redacted'</span>,
+    <span class="hljs-attribute">timestamp</span>: <span class="hljs-number">1426256447.70695</span>,
+  }</code></pre><p>(Much of that can actually be ignored I think - sirius isn&#39;t using it - but that&#39;s what it looks like.) So that gets the bridge online, not the printer. To get the printer online, it sends a packet afterward that looks like:</p>
+<pre class="hljs"><code>{
+    <span class="hljs-attribute">timestamp</span>: <span class="hljs-number">1419107228.91187</span>,
+    <span class="hljs-attribute">type</span>: <span class="hljs-string">'BridgeEvent'</span>,
+    <span class="hljs-attribute">json_payload</span>: {
+      <span class="hljs-attribute">name</span>: <span class="hljs-string">'encryption_key_required'</span>,
+      <span class="hljs-attribute">device_address</span>: <span class="hljs-string">'redacted'</span>,
+    },
+    <span class="hljs-attribute">bridge_address</span>: <span class="hljs-string">'redacted'</span>,
+  }</code></pre><p>So at that point, the server knows about that bridge, and now it knows the printer on that bridge. That&#39;s all the client does. on to the server claim code! Tong story short, it mostly lives here:
+<a href="https://github.com/nordprojects/sirius/blob/master/sirius/coding/claiming.py">https://github.com/nordprojects/sirius/blob/master/sirius/coding/claiming.py</a>. So when you type a claim code into the website, it gets unpacked to find the bridge ID and the device ID: <a href="https://github.com/nordprojects/sirius/blob/master/sirius/coding/claiming.py#L70-L89">https://github.com/nordprojects/sirius/blob/master/sirius/coding/claiming.py#L70-L89</a> and then it associates that device to your account. voila! THE GOOD NEWS IS that in searching for that, I found an actually documented summary of what claim codes are: <a href="https://github.com/nordprojects/sirius#claim-codes">https://github.com/nordprojects/sirius#claim-codes</a>.</p>
+<p>KTamas: and after all this, it appears permanently on device.li?</p>
+<p>Josh: Yurp, essentially. I guess technically &quot;until someone else claims it&quot;, if the device is reset etc. but I don&#39;t know if that regenerates the ID, or if it&#39;s truly based on the mac address I guess it could be easy enough to make a lil microsite that generates new addresses + claim codes, to make this part easier.</p>
+    </article>
+  </body>
+</html>
