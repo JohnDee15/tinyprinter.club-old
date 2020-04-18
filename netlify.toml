@@ -1,4 +1,4 @@
 [build]
   base="."
   publish="."
-  command="generate-md --input readme.md --output . && mv readme.html index.html"
+  command="pip3 install grip && grip readme.md --export - | gsed '/<h3>/{:a;N;/<\/h3>/!ba};/readme\.md/d' > index.html"
