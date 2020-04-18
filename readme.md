@@ -1,3 +1,24 @@
+# Table of Contents
+
+<!-- TOC -->
+
+- [Table of Contents](#table-of-contents)
+- [So you want to have a Little Printer](#so-you-want-to-have-a-little-printer)
+- [What you'll need](#what-youll-need)
+- [How to get started](#how-to-get-started)
+- [Let's make a (fake) printer](#lets-make-a-fake-printer)
+- [Wiring it all up](#wiring-it-all-up)
+- [Credits](#credits)
+- [FAQ](#faq)
+- [History / timeline](#history--timeline)
+- [Links](#links)
+  - [Code](#code)
+- [Other](#other)
+  - [Misc notes ignore for now](#misc-notes-ignore-for-now)
+  - [Addendum: how the whole fake printer thing works (by Josh)](#addendum-how-the-whole-fake-printer-thing-works-by-josh)
+
+<!-- /TOC -->
+
 # So you want to have a Little Printer
 
 Good news! You came to the right place. Just follow these ??? easy steps and you'll be set up in no time* (a fair amount of time, actually.)
@@ -59,6 +80,60 @@ Get the [app](https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&
 # Credits
 
 [Tamas Kadar (KTamas)](https://ktamas.com/) ([email](mailto:ktamas@ktamas.com), [twitter](https://twitter.com/ktamas)) and [Joshua May (notjosh)](https://notjosh.com/) ([twitter](https://twitter.com/notjosh)). Watch the [!!Con 2020](http://bangbangcon.com/) talk ["Little Printing for Everyone!!1"](http://bangbangcon.com/speakers.html) by KTamas once it's published on YouTube.
+
+# FAQ
+
+**Q: Why?**  
+A: Because it's fun.
+
+
+**Q: What's the bridge?**  
+A: The original Little Printer architecture required two devices: the printer itself, and the bridge. The printer connected to the bridge, and the bridge connected to the Berg Cloud (which was replaced by the `sirius` project); it was part of an envisioned group of internet-connected products. The client (`sirius-client`) acts as a bridge and has various "drivers" for printers.
+
+**Q: Do I need a Paperang P1, specifically? Can't I just use something else?**  
+A: Of course you can! `sirius-client` already has a generic `escpos` driver, which lets you connect a wide variety of thermal printers that use the ESC/POS protocol. It also has a simple console driver, that simply show the image your printer would print. There is nothing stopping you from making your own driver to your favorite printer of choice.
+
+**Q: What about the other Paperang models (P2, P2S)?**  
+A: They will work... sort of. The thing about them is they print at a higher resolution. The P1 has the exact same resolution as the original Little Printer, and the server sends pixel-perfect bitmaps to the client, hence this is not a problem with that. With the newer models, you either have to add support to the server to make higher-resolution images or resize the images on the client-side.
+
+**Q: Where can I get a real Little Printer?**  
+A: I mean, eBay, if you're lucky. I've been looking for a while now, and it seems like noone wants to sell theirs.
+
+
+# History / timeline
+
+* (November, 2011) [Hello Little Printer, available 2012](https://vimeo.com/32796535) (Product announcement link)
+* (March, 2012) [Little Printer homepage](http://web.archive.org/web/20120301003906/http://bergcloud.com/littleprinter/)
+* (July, 2014) [Little Printer homepage](http://web.archive.org/web/20140722111616/http://littleprinter.com/)
+* (September, 2014) [Week 483](http://web.archive.org/web/20151019041519/http://blog.bergcloud.com/2014/09/09/week-483/) (Berg is shutting down)
+* (September, 2014) [The future of Little Printer](http://web.archive.org/web/20150207025053/http://littleprinterblog.tumblr.com/post/97047976103/the-future-of-little-printer)
+* (March, 2015) [Trying something](http://web.archive.org/web/20151025093243/http://littleprinterblog.tumblr.com/post/112431535978/trying-something) (Announcing `sirius`, the new backend for the Berg Cloud Bridge)
+* (March, 2015) [genmon/sirius](https://github.com/genmon/sirius)
+* (March, 2015) [A little longer](http://web.archive.org/web/20151025164214/http://littleprinterblog.tumblr.com/post/115018012993/a-little-longer) (Keeping the servers running for a few more months)
+* (December, 2015) [End of 2015](http://web.archive.org/web/20151025164214/http://littleprinterblog.tumblr.com/post/115018012993/a-little-longer) (People working on Sirius, Bridge can be updated to use it)
+* (December, 2015) [Updating the Bridge](https://github.com/genmon/sirius/wiki/Updating-the-Bridge)
+* (December, 2015-July, 2019) [Directing the Berg cloud bridge](https://github.com/genmon/sirius/issues/8) (long GH issue, important historical document about the "lost years")
+* (May, 2019) [Little Printer returns as an open-source messaging device] (https://www.theverge.com/2019/5/19/18628287/little-printer-berg-nord-projects-app-open-source-messaging)
+* (May, 2019) [Little Printers, a friendly new messaging app and cloud platform.](https://nordprojects.co/projects/littleprinters/) (Nord Projects' announcement of the new app, working server, api, device.li etc.)
+
+# Links
+
+## Code
+
+* [nordprojects/sirius](https://github.com/nordprojects/sirius) (the server's code)
+* [nordprojects/littleprinters-ios-app](https://github.com/nordprojects/littleprinters-ios-app) (the iOS app's code)
+* [notjosh/sirius-client](https://github.com/notjosh/sirius-client) (notjosh's universal client for `sirius` — WIP)
+* [ktamas/sirius-client](https://github.com/ktamas/sirius-client) (KTamas' fork of the client — older, but works)
+* [ktamas/python-paperang](https://github.com/ktamas/python-paperang) (the python library that connects to the Paperang P1, with the protocol reverse-engineered)
+
+# Other
+
+## Misc notes ignore for now
+
+BERG Cloud Bridge sits by your broadband router and wirelessly connects Little Printer to the web, which makes it easy for you to place Little Printer where you can see it.
+
+British Experimental Rocket Group
+
 
 ---
 
