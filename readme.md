@@ -113,7 +113,7 @@ A: I mean, eBay, if you're lucky. I've been looking for a while now, and it seem
 * (December, 2015) [End of 2015](http://web.archive.org/web/20151025164214/http://littleprinterblog.tumblr.com/post/115018012993/a-little-longer) (People working on Sirius, Bridge can be updated to use it)
 * (December, 2015) [Updating the Bridge](https://github.com/genmon/sirius/wiki/Updating-the-Bridge)
 * (December, 2015-July, 2019) [Directing the Berg cloud bridge](https://github.com/genmon/sirius/issues/8) (long GH issue, important historical document about the "lost years")
-* (May, 2019) [Little Printer returns as an open-source messaging device] (https://www.theverge.com/2019/5/19/18628287/little-printer-berg-nord-projects-app-open-source-messaging)
+* (May, 2019) [Little Printer returns as an open-source messaging device](https://www.theverge.com/2019/5/19/18628287/little-printer-berg-nord-projects-app-open-source-messaging)
 * (May, 2019) [Little Printers, a friendly new messaging app and cloud platform.](https://nordprojects.co/projects/littleprinters/) (Nord Projects' announcement of the new app, working server, api, device.li etc.)
 
 # Links
