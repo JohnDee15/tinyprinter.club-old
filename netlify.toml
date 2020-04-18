@@ -1,0 +1,4 @@
+[build]
+  base="."
+  publish="."
+  command="generate-md --input readme.md --output . && mv readme.html index.html"

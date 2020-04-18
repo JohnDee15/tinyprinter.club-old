@@ -1,0 +1,22 @@
+{
+  "name": "tinyprinter.club",
+  "version": "1.0.0",
+  "description": "Good news! You came to the right place. Just follow these ??? easy steps and you'll be set up in no time* (a fair amount of time, actually.)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KTamas/tinyprinter.club.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KTamas/tinyprinter.club/issues"
+  },
+  "homepage": "https://github.com/KTamas/tinyprinter.club#readme",
+  "dependencies": {
+    "markdown-styles": "^3.1.10"
+  }
+}
