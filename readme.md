@@ -60,7 +60,9 @@ Get the [app](https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&
 
 [Tamas Kadar (KTamas)](https://ktamas.com/) ([email](mailto:ktamas@ktamas.com), [twitter](https://twitter.com/ktamas)) and [Joshua May (notjosh)](https://notjosh.com/) ([twitter](https://twitter.com/notjosh)). Watch the [!!Con 2020](http://bangbangcon.com/) talk ["Little Printing for Everyone!!1"](http://bangbangcon.com/speakers.html) by KTamas once it's published on YouTube.
 
-# How the whole fake printer thing works (by Josh)
+---
+
+## Addendum: how the whole fake printer thing works (by Josh)
 
 Josh: It takes the printer ID (mac address of printer iirc, that you can generate) and makes a random 16 digit code ("claim code"). From there, it posts that to the server as part of the normal handshake. Then the device just...waits. eventually the user logs onto the server, types in claim code, then you own that printer ID, and the server will start firing payloads at it. It's all very....simple. no like, fancy key exchange, or identification, or anything.
 
