@@ -39,6 +39,8 @@ I'm going to steal this useful graph from [Nordprojects](https://nordprojects.co
 
 The original Little Printer architecture required two devices: the printer itself, and the bridge. The printer connected to the bridge via [Zigbee](https://en.wikipedia.org/wiki/Zigbee), and the bridge connected to the Berg Cloud (which was replaced by the `sirius` project — see below). The Berg Cloud Bridge acted as a platform for an envisioned ecosystem of IoT devices, that never really materialized. The client (`sirius-client` — we'll get to that soon) acts as the bridge and has various "drivers" for printers.
 
+![new architecture](how-it-works-2.png)
+
 # How to get started
 
 We'll assume you have your Paperang. Great! You can already use via its app on your smartphone, but that's not what we'll do.
