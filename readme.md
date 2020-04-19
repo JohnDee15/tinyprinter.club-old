@@ -5,6 +5,7 @@
 - [Table of Contents](#table-of-contents)
 - [So you want to have a Little Printer](#so-you-want-to-have-a-little-printer)
 - [What you'll need](#what-youll-need)
+- [How does this all work?](#how-does-this-all-work)
 - [How to get started](#how-to-get-started)
 - [Let's make a (fake) printer](#lets-make-a-fake-printer)
 - [Wiring it all up](#wiring-it-all-up)
@@ -25,10 +26,18 @@ Good news! You came to the right place. Just follow these ??? easy steps and you
 
 # What you'll need
 
-* A thermal printer, ideally a Paperang P1. There are a number of places where you can buy one: Amazon ([US](https://www.amazon.com/PAPERANG-Portable-Language-Wireless-Bluetooth/dp/B07TCJ2TC6/), [UK](https://www.amazon.co.uk/PAPERANG-Wireless-Mobile-Instant-Printer/dp/B078HZK2NV), [DE](https://www.amazon.de/Paperang-Mini-Drucker-Android-Ger%C3%A4te-Druckpapier-gew%C3%B6hnlich/dp/B082PWV57H/)), [Thepaperang](https://thepaperang.com/products/paperang-p1), [Paperangprint](https://paperangprint.com/collections/paperang-printers/products/paperang-p1), [Aliexpress](https://www.aliexpress.com/w/wholesale-paperang-p1.html) and so on. Don't forget to buy a few rolls of paper for it; you can find them in many colors, and sticker paper is especially fun!
+* A thermal printer, like the Paperang P1. There are a number of places where you can buy one: Amazon ([US](https://www.amazon.com/PAPERANG-Portable-Language-Wireless-Bluetooth/dp/B07TCJ2TC6/), [UK](https://www.amazon.co.uk/PAPERANG-Wireless-Mobile-Instant-Printer/dp/B078HZK2NV), [DE](https://www.amazon.de/Paperang-Mini-Drucker-Android-Ger%C3%A4te-Druckpapier-gew%C3%B6hnlich/dp/B082PWV57H/)), [Thepaperang](https://thepaperang.com/products/paperang-p1), [Paperangprint](https://paperangprint.com/collections/paperang-printers/products/paperang-p1), [Aliexpress](https://www.aliexpress.com/w/wholesale-paperang-p1.html) and so on. Don't forget to buy a few rolls of paper for it; you can find them in many colors, and sticker paper is especially fun!
 * Ideally, a Raspberry Pi with Bluetooth, but we've tested this with a Mac as well, and with some tweaks it will work on any computer with Bluetooth running *nix
 * Node.js 10, Yarn, Python 3.7, Docker
 * Ideally an iPhone for the [app](https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&mt=8), but you can use the [web client](https://littleprinters.netlify.app/) as well (with reduced functionality)
+
+# How does this all work?
+
+I'm going to steal this useful graph from [Nordprojects](https://nordprojects.co/projects/littleprinters/):
+
+![architecture](how-it-works.png)
+
+The original Little Printer architecture required two devices: the printer itself, and the bridge. The printer connected to the bridge via [Zigbee](https://en.wikipedia.org/wiki/Zigbee), and the bridge connected to the Berg Cloud (which was replaced by the `sirius` project — see below). The Berg Cloud Bridge acted as a platform for an envisioned ecosystem of IoT devices, that never really materialized. The client (`sirius-client` — we'll get to that soon) acts as the bridge and has various "drivers" for printers.
 
 # How to get started
 
@@ -42,18 +51,21 @@ Pair your Paperang with your computer over Bluetooth and make sure you have Node
 
 This project is predicated on us prentending to be a Little Printer, so let's do that.
 
-Clone the [`nordprojects/sirius`](https://github.com/nordprojects/sirius) repository from github, then run `docker-compose -f docker-compose.yml -f docker-compose.db.yml -f docker-compose.development.yml up --build -d` and get a cup of coffee while it all downloads and builds.
+The easy way is visiting [this website](https://little-printer-claim-code.netlify.app/) that generates the required `*.printer` file for you.
 
-Once it's up and running, ssh into it (`docker-compose exec sirius bash`) and run `./manage.py fake printer`, which generates a `*.printer` file, it looks like this:
+The hard way is cloning the [`nordprojects/sirius`](https://github.com/nordprojects/sirius) repository from github, running `docker-compose -f docker-compose.yml -f docker-compose.db.yml -f docker-compose.development.yml up --build -d`, waiting for it to build, sshing into it (`docker-compose exec sirius bash`) and running `./manage.py fake printer`, which gives you the same result.
+
+I recommend the easy way.
+
+In the end, you have a file that looks like this:
 
 ```
-  address: abcdef0123456789
-       DB id: 8
-      secret: 4a8489a9b8
-  claim code: 123a-456b-789c-012d
+     address: db708b77ae2ee5b5
+      secret: 1011795836314
+  claim code: fojy-q4xv-7pe2-xt00
 ```
 
-Save that into a file, guard it with your life; this is your printer now.
+Save it and guard it with your life; this is your printer now.
 
 Next, we're going to claim the printer on the nord-sirious instance. Go to [https://littleprinter.nordprojects.co/](https://littleprinter.nordprojects.co/), sign in with Twitter, and click "Claim a printer". Enter the claim code you have and give it a name, then hit "Claim Printer".
 
@@ -65,13 +77,13 @@ Next, we'll put it all together, connecting our Paperang to the network. For tha
 
 Anyways, clone both of them from Github, and we'll start with some testing with the latter project. We're going to assume you have at least a passing understanding of both Python and Typescript.
 
-If you're on linux, and we'll assume Debian, you'll need the following packages installed: `libbluetooth-dev libhidapi-dev libatlas-base-dev python3-llvmlite python3-numba python-llvmlite llvm-dev`
+If you're on Linux, and we'll assume Debian, you'll need the following packages installed: `libbluetooth-dev libhidapi-dev libatlas-base-dev python3-llvmlite python3-numba python-llvmlite llvm-dev`.
 
-Find the MAC address of your printer and put that into `printer.py` and `littleprinter.py`. Yes, this should be in a separate config file or something. While you're in the latter file, set a temp directory that's writeable with whatever user you're using for the two projects to communicate.
+Create a `config.py` based on `config.example.py`. If you don't have the MAC address of your paperang, that's fine; just use an empty string and the code will find it. Set a temp directory that's writeable by both projects.
 
-Uncomment the self-test in `printer.py` then run it. If you did everything well, you should have a bunch of infos printed on your Paperang!
+Run `printer.py` to print a self-test. If you did everything well, you should have a bunch of infos printed on your Paperang! You can also edit this file to print any arbitrary image, processed with the famous [Atkinson dithering algorithm](https://en.wikipedia.org/wiki/Dither#Algorithms).
 
-Let's get `sirius-client` working. Install ts-node globally (`npm install -g ts-node`), then do a `yarn install`. Put your printer file into the `fixtures` folder, then edit `bin/client.ts` and point `printerDataPath` to it. Edit `src/device/printer/filesystem-printer.ts` and update it with the temp directory we use for communication that you created two paragraphs before.
+Next, let's get `sirius-client` working. Install ts-node globally (`npm install -g ts-node`), then do a `yarn install`. Put your printer file into the `fixtures` folder, then edit `bin/client.ts` and point `printerDataPath` to it. Edit `src/device/printer/filesystem-printer.ts` and update it with the temp directory we use for communication that you created two paragraphs before.
 
 Now run both projects (`python3 littlepriter.py` and `ts-node bin/client.ts`), and you're ready to print something!
 
@@ -85,10 +97,6 @@ Get the [app](https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&
 
 **Q: Why?**  
 A: Because it's fun.
-
-
-**Q: What's the bridge?**  
-A: The original Little Printer architecture required two devices: the printer itself, and the bridge. The printer connected to the bridge, and the bridge connected to the Berg Cloud (which was replaced by the `sirius` project); it was part of an envisioned group of internet-connected products. The client (`sirius-client`) acts as a bridge and has various "drivers" for printers.
 
 **Q: Do I need a Paperang P1, specifically? Can't I just use something else?**  
 A: Of course you can! `sirius-client` already has a generic `escpos` driver, which lets you connect a wide variety of thermal printers that use the ESC/POS protocol. It also has a simple console driver, that simply show the image your printer would print. There is nothing stopping you from making your own driver to your favorite printer of choice.
