@@ -36,10 +36,12 @@ Good news! You came to the right place. Just follow these ??? easy steps and you
 I'm going to steal this useful graph from [Nordprojects](https://nordprojects.co/projects/littleprinters/):
 
 ![architecture](how-it-works.png)
+<small>© Nordprojects, 2019</small>
 
 The original Little Printer architecture required two devices: the printer itself, and the bridge. The printer connected to the bridge via [Zigbee](https://en.wikipedia.org/wiki/Zigbee), and the bridge connected to the Berg Cloud (which was replaced by the `sirius` project — see below). The Berg Cloud Bridge acted as a platform for an envisioned ecosystem of IoT devices, that never really materialized. The client (`sirius-client` — we'll get to that soon) acts as the bridge and has various "drivers" for printers.
 
 ![new architecture](how-it-works-2.png)
+<small>© Nordprojects, 2019</small>
 
 # How to get started
 
@@ -93,7 +95,7 @@ Get the [app](https://itunes.apple.com/us/app/little-printers/id1393105914?ls=1&
 
 # Credits
 
-[Tamas Kadar (KTamas)](https://ktamas.com/) ([email](mailto:ktamas@ktamas.com), [twitter](https://twitter.com/ktamas)), [Joshua May (notjosh)](https://notjosh.com/) ([twitter](https://twitter.com/notjosh)), Monica Farrell ([twitter](https://twitter.com/monica_farrell)). Watch the [!!Con 2020](http://bangbangcon.com/) talk ["Little Printing for Everyone!!1"](http://bangbangcon.com/speakers.html) by KTamas once it's published on YouTube.
+[Tamas Kadar (KTamas)](https://ktamas.com/) ([email](mailto:ktamas@ktamas.com), [twitter](https://twitter.com/ktamas)), [Joshua May (notjosh)](https://notjosh.com/) ([twitter](https://twitter.com/notjosh)), Monica Farrell ([twitter](https://twitter.com/monica_farrell)). Watch the [!!Con 2020](http://bangbangcon.com/) talk ["Little Printing for Everyone!!1"](http://bangbangcon.com/speakers.html) by KTamas once it's published on YouTube. The "how does it work" image was created by [Nordprojects](https://nordprojects.co).
 
 # FAQ
 
