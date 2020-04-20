@@ -116,6 +116,7 @@ A: I mean, eBay, if you're lucky. I've been looking for a while now, and it seem
 
 * (November, 2011) [Hello Little Printer, available 2012](https://vimeo.com/32796535) (Product announcement link)
 * (March, 2012) [Little Printer homepage](http://web.archive.org/web/20120301003906/http://bergcloud.com/littleprinter/)
+* (May, 2014) [Berg Cloud shop](http://web.archive.org/web/20140529015642/http://uk-shop.bergcloud.com/) 
 * (July, 2014) [Little Printer homepage](http://web.archive.org/web/20140722111616/http://littleprinter.com/)
 * (September, 2014) [Week 483](http://web.archive.org/web/20151019041519/http://blog.bergcloud.com/2014/09/09/week-483/) (Berg is shutting down)
 * (September, 2014) [The future of Little Printer](http://web.archive.org/web/20150207025053/http://littleprinterblog.tumblr.com/post/97047976103/the-future-of-little-printer)
